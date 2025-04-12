@@ -1,0 +1,37 @@
+server:
+  port: 9000
+
+spring:
+    cloud:
+      gateway:
+        routes:
+          - id : user-service
+            uri : lb://SERVICEUSER
+            predicates:
+              - Path=/user/**
+            filters:
+              - Filter
+              - StripPrefix=0
+
+          - id : blog-service
+            uri : lb://SERVICEBLOG
+            predicates:
+              - Path=/blog/**
+            filters:
+              - Filter
+              - StripPrefix=0
+
+          - id : category-service
+            uri : lb://SERVICEBLOG
+            predicates:
+                - Path=/category/**
+            filters:
+                - Filter
+                - StripPrefix=0
+      globalcors:
+        corsConfigurations:
+                  '[/**]':
+                    allowedOrigins: "http://localhost:4200"
+                    allowedMethods: "GET,POST,PUT,DELETE"
+                    allowedHeaders: "*"
+
