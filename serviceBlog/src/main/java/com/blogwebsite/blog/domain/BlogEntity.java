@@ -1,5 +1,6 @@
 package com.blogwebsite.blog.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="blog")
-public class BlogEntity {
+public class BlogEntity implements Serializable
+{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

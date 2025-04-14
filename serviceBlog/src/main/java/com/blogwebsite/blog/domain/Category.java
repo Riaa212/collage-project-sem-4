@@ -1,5 +1,7 @@
 package com.blogwebsite.blog.domain;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable
+{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
