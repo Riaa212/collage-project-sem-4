@@ -1,19 +1,25 @@
 package com.blogwebsite.blog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.blogwebsite.blog.domain.BlogEntity;
 import com.blogwebsite.blog.proxy.BlogProxy;
 import com.blogwebsite.blog.proxy.CommentProxy;
 import com.blogwebsite.blog.service.impl.BlogServiceImpl;
@@ -81,7 +87,7 @@ public class BlogController {
 	@GetMapping("/getCommentsByBlogId/{id}")
 	public ResponseEntity<?> getCommentsByBlogId(@PathVariable("id") Integer id)
 	{
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(blogImpl.getCommentsByBlogId(id));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(blogImpl.getAllCommentsByBlogId(id));
 	}
 	
 
@@ -103,4 +109,21 @@ public class BlogController {
 	{
 		return ResponseEntity.status(HttpStatus.OK).body(blogImpl.getBlogByUserId(userId));
 	}
+	
+	 @PostMapping("/blogs")
+	 public ResponseEntity<?> createBlog(
+//	     @RequestPart("title") String title,
+//	     @RequestPart("content") String content,
+//	     @RequestPart("") String category
+		@ModelAttribute("blog") BlogEntity blogEntity,
+	     @RequestPart("images") List<MultipartFile> images
+	 ) {
+	     return ResponseEntity.status(HttpStatus.OK).body(blogImpl.createBlog(images,blogEntity));
+	 }
+	 
+	 @DeleteMapping("/deleteCommentById/{id}")
+	 public ResponseEntity<?> deleteCommentById(@PathVariable("id") Integer commentId)
+	 {
+		 return ResponseEntity.status(HttpStatus.OK).body(blogImpl.deletecommentById(commentId));
+	 }
 }

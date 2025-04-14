@@ -25,4 +25,8 @@ public class BlogProxy {
 	
 	private List<CommentProxy> comments;
 	
+    private List<String> imageUrls;
+    
+	private Long totalComments;
 }
+

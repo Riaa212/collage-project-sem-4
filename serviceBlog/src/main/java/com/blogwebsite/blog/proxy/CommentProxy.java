@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentProxy {
 
-//	private Integer id;
+	private Integer id;
+	
 	private String comment_content;
 
 	private Integer userId;

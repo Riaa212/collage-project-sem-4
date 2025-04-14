@@ -1,12 +1,19 @@
 package com.blogwebsite.blog.service.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blogwebsite.blog.FeignClient.UserClient;
 import com.blogwebsite.blog.domain.BlogEntity;
@@ -17,6 +24,7 @@ import com.blogwebsite.blog.proxy.CommentProxy;
 import com.blogwebsite.blog.proxy.UserProxy;
 import com.blogwebsite.blog.repository.BlogRepo;
 import com.blogwebsite.blog.repository.CategoryRepo;
+import com.blogwebsite.blog.repository.CommentRepo;
 import com.blogwebsite.blog.service.BlogService;
 import com.blogwebsite.blog.utils.Helper;
 
@@ -34,6 +42,8 @@ public class BlogServiceImpl implements BlogService
 	@Autowired
 	private Helper helper;
 
+	@Autowired
+	private CommentRepo commentRepo;
 	
 	@Autowired
 	private UserClient userClient;
@@ -116,21 +126,22 @@ public class BlogServiceImpl implements BlogService
 	{
 		Optional<BlogEntity> blogbyId = blogRepo.findById(blogId);
 		blogbyId.get().setUser_id(commentProxy.getUserId());
+//		blogbyId.get().setTotalComments();
 		blogbyId.get().getComments().add(helper.convert(commentProxy, Comment.class));
 		blogRepo.save(blogbyId.get());
 		return "add comment succefully";
 	}
 	
 	//get comments by Blog id
-	@Override
-	public List<CommentProxy> getCommentsByBlogId(Integer blogId)
-	{
-		Optional<BlogEntity> byId = blogRepo.findById(blogId);
-//		 List<Comment> byBlogId = commentRepo.findByBlogId(blogId);
-		List<Comment> comments = byId.get().getComments();
-		return helper.convertList(comments, CommentProxy.class);
-		
-	}
+//	@Override
+//	public List<CommentProxy> getCommentsByBlogId(Integer blogId)
+//	{
+//		Optional<BlogEntity> byId = blogRepo.findById(blogId);
+////		 List<Comment> byBlogId = commentRepo.findByBlogId(blogId);
+//		List<Comment> comments = byId.get().getComments();
+//		return helper.convertList(comments, CommentProxy.class);
+//		
+//	}
 	
 	//get blog by id - working
 	@Override
@@ -175,5 +186,77 @@ public class BlogServiceImpl implements BlogService
 		System.err.print(list);
 		
 		return helper.convertList(list, BlogProxy.class);
+	}
+	
+	
+	
+	public BlogEntity createBlog( List<MultipartFile> images,BlogEntity blogEntity)
+	{
+	    List<String> imageUrls = new ArrayList<>();
+
+	    for (MultipartFile image : images) {
+	        try {
+	        	//for unique file name
+	            String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+	            
+	            //upload in folder
+	            Path path = Paths.get("uploads/" + fileName);
+//	            Files.createDirectories(path.getParent());
+	            Files.write(path, image.getBytes());
+
+	            	
+	            String imageUrl = "http://localhost:8088/uploads/" + fileName;
+	      
+	            imageUrls.add(imageUrl);
+
+	            System.err.println("Image saved to: " + path.toAbsolutePath());
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+
+	    BlogEntity blog = new BlogEntity();
+	    blog.setTitle(blogEntity.getTitle());
+	    blog.setContent(blogEntity.getContent());
+//	    blog.setImageUrls(images);
+	    blog.setImageUrls(imageUrls);
+	    blog.setCategory(blogEntity.getCategory());
+	    blog.setUser_id(blogEntity.getUser_id());
+	    
+	    
+	    
+	    BlogEntity saved = blogRepo.save(blog);
+	    return saved;
+	}
+	
+	//get all comments on blogs
+	@Override
+	public List<Comment> getAllCommentsByBlogId(Integer blogId)
+	{
+		Optional<BlogEntity> byId = blogRepo.findById(blogId);
+		
+		if(byId.isPresent())
+		{
+			BlogEntity blogObj = byId.get();
+			
+			List<Comment> comments = blogObj.getComments();
+			
+			long totalComment = comments.stream().count();
+			
+			blogObj.setTotalComments(totalComment);
+			
+			blogRepo.save(blogObj);
+			System.out.println("total comments==>"+totalComment);
+			
+			return comments;
+		}
+		return null;
+	}
+	
+	public String deletecommentById(Integer commentId)
+	{
+		commentRepo.deleteById(commentId);
+		return "Deleted successfully";
 	}
 }

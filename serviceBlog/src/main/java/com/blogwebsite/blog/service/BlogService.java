@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.blogwebsite.blog.domain.BlogEntity;
+import com.blogwebsite.blog.domain.Comment;
 import com.blogwebsite.blog.proxy.BlogProxy;
 import com.blogwebsite.blog.proxy.CommentProxy;
 import com.blogwebsite.blog.proxy.UserProxy;
@@ -28,7 +29,7 @@ public interface BlogService {
 	
 	public UserProxy getUserByUserId(Integer id);
 	
-	public List<CommentProxy> getCommentsByBlogId(Integer id);
+	public List<Comment>  getAllCommentsByBlogId(Integer id);
 	
 	public BlogProxy getBlogById(Integer id);
 

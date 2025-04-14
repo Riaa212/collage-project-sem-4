@@ -18,7 +18,7 @@ public class FiegnConfig {
 
 	    private String getAuthToken() {
 	        // Retrieve your token here
-	        return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYWhpQGdtYWlsLmNvbSIsImlhdCI6MTc0NDI4NjA0OCwiZXhwIjoxNzQ0MzA0MDQ4fQ.qL4ybQdXOYAyGFDuGE9E9yA-IjLXcA3NsO1mDgWRd4E";
+	        return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyaXlhQGdtYWlsLmNvbSIsImlhdCI6MTc0NDU1MzgyOCwiZXhwIjoxNzQ0NTcxODI4fQ.9nsfzylBCvD2cl0jWy0Jvyh4ANfArg_4SkEZF-SHiso";
 	    }
 }
 

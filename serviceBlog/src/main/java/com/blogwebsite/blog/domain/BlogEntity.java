@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -62,6 +63,10 @@ public class BlogEntity {
 	@UpdateTimestamp
 	private LocalDateTime  lastUpdated;
 	
+	@ElementCollection
+    private List<String> imageUrls; // URLs of uploaded images
+	
+	private Long totalComments;
 	
 	
 }

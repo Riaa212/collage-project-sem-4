@@ -24,4 +24,6 @@ public class UserProxy {
 	private byte[] profilePhoto;
 	
 	private List<BlogProxy> blog;
+
 }
+
