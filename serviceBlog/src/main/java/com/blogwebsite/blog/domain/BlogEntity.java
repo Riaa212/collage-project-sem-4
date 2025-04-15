@@ -56,6 +56,10 @@ public class BlogEntity implements Serializable
 	@JoinColumn(name = "blog_id")
 	private List<Comment> comments;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "blog_id")
+	private List<BlogRating> rating;
+	
 //	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 //	@Column(nullable = true)

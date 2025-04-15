@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blogwebsite.blog.domain.BlogEntity;
+import com.blogwebsite.blog.domain.BlogRating;
 import com.blogwebsite.blog.proxy.BlogProxy;
 import com.blogwebsite.blog.proxy.CommentProxy;
 import com.blogwebsite.blog.service.impl.BlogServiceImpl;
@@ -81,7 +82,22 @@ public class BlogController {
 	{
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(blogImpl.addCommentToBlog(blogid, commentProxy));
 	}
+
+		
+	@PostMapping("/addrating/{id}")
+	public ResponseEntity<?> addRatings(@PathVariable("id") Integer blogId,@RequestBody BlogRating rating)
+	{
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(blogImpl.addRating(blogId, rating));
+	}
 	
+
+	@PostMapping("/addratingtest/{blogid}/{rating}/{userId}")
+	public ResponseEntity<?> addRatingstest(@PathVariable("blogid") Integer blogId,
+											@PathVariable("rating") Integer rating,
+											@PathVariable("userId") Integer userId)
+	{
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(blogImpl.addRatings(blogId, rating,userId));
+	}
 	
 	//get only comment by blog id - working
 	@GetMapping("/getCommentsByBlogId/{id}")

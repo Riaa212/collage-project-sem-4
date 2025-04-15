@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.blogwebsite.blog.domain.BlogEntity;
+import com.blogwebsite.blog.domain.BlogRating;
 import com.blogwebsite.blog.domain.Comment;
 import com.blogwebsite.blog.proxy.BlogProxy;
 import com.blogwebsite.blog.proxy.CommentProxy;
@@ -39,4 +40,5 @@ public interface BlogService {
 	
 	public List<BlogProxy> getBlogByUserId(Integer userid);
 	
+	public String addRating(Integer blogId,BlogRating rating);
 }

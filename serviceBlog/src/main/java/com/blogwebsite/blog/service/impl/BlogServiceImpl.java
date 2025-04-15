@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blogwebsite.blog.FeignClient.UserClient;
 import com.blogwebsite.blog.domain.BlogEntity;
+import com.blogwebsite.blog.domain.BlogRating;
 import com.blogwebsite.blog.domain.Category;
 import com.blogwebsite.blog.domain.Comment;
 import com.blogwebsite.blog.proxy.BlogProxy;
@@ -132,6 +133,34 @@ public class BlogServiceImpl implements BlogService
 		return "add comment succefully";
 	}
 	
+	@Override
+	public String addRating(Integer blogId,BlogRating rating)
+	{
+		Optional<BlogEntity> blogbyId = blogRepo.findById(blogId);
+		blogbyId.get().getRating().add(rating);
+		blogbyId.get().setUser_id(rating.getUserId());
+		blogRepo.save(blogbyId.get());
+		return "rating added successfully";
+	}
+	
+	public String addRatings(Integer blogId,Integer rating,Integer userId)
+	{
+		Optional<BlogEntity> blogbyId = blogRepo.findById(blogId);
+	
+		if(blogbyId.isPresent())
+		{
+		BlogRating br=new BlogRating();
+		br.setRating(rating);
+		br.setUserId(userId);
+		}
+		blogRepo.save(blogbyId.get());
+		return "rating added successfully";
+	}
+	
+//	public Integer avgRating()
+//	{
+//		
+//	}
 	//get comments by Blog id
 //	@Override
 //	public List<CommentProxy> getCommentsByBlogId(Integer blogId)
@@ -253,10 +282,13 @@ public class BlogServiceImpl implements BlogService
 		}
 		return null;
 	}
-	
-	public String deletecommentById(Integer commentId)
+		public String deletecommentById(Integer commentId)
 	{
 		commentRepo.deleteById(commentId);
 		return "Deleted successfully";
 	}
+//	public String addRating()
+//	{
+//	return null;	
+//	}
 }

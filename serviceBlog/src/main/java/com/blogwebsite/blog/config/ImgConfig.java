@@ -21,10 +21,7 @@ public class ImgConfig implements WebMvcConfigurer
 //	  	String uploadPath="file:///C:/Users/Riya/Desktop/SB_Quillist_Final/Quillist_04_04_2025-main/Quillist_04_04_2025-main/serviceBlog/uploads/";
 	  	
 	  	String currentDir = System.getProperty("user.dir");
-	  	
-//	      registry.addResourceHandler("/uploads/**")
-//	              .addResourceLocations(uploadPath);
-	  	
+//	  http://localhost:8088/uploads/bcc98d0a-a3a3-4e5c-a1aa-51a36fb41866_place.jpg
 	  	 // Normalize slashes and build full path
 	      String uploadPath = "file:///" + currentDir.replace("\\", "/") + "/uploads/";
 

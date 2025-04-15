@@ -1,5 +1,6 @@
 package com.blogwebsite.user.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="user")
-public class UserEntity {
+public class UserEntity implements Serializable
+{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -43,6 +45,7 @@ public class UserEntity {
 	
 	@Lob
 	private String bio;
+	
 	//@OneToMany(cascade=CascadeType.ALL)
 	//@JoinColumn(name="user_id")
 	//private List<BlogEntity> blog;
