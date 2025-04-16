@@ -26,6 +26,7 @@ import com.blogwebsite.blog.proxy.UserProxy;
 import com.blogwebsite.blog.repository.BlogRepo;
 import com.blogwebsite.blog.repository.CategoryRepo;
 import com.blogwebsite.blog.repository.CommentRepo;
+import com.blogwebsite.blog.repository.RatingRepo;
 import com.blogwebsite.blog.service.BlogService;
 import com.blogwebsite.blog.utils.Helper;
 
@@ -49,6 +50,8 @@ public class BlogServiceImpl implements BlogService
 	@Autowired
 	private UserClient userClient;
 	
+	@Autowired
+	private RatingRepo ratingRepo;
 	
 	//create blog by user id
 	@Override
@@ -137,9 +140,13 @@ public class BlogServiceImpl implements BlogService
 	public String addRating(Integer blogId,BlogRating rating)
 	{
 		Optional<BlogEntity> blogbyId = blogRepo.findById(blogId);
+		if(blogbyId.isPresent())
+		{
+		BlogEntity blogEntity = blogbyId.get();
 		blogbyId.get().getRating().add(rating);
 		blogbyId.get().setUser_id(rating.getUserId());
-		blogRepo.save(blogbyId.get());
+		blogRepo.save(blogEntity);
+		}
 		return "rating added successfully";
 	}
 	
@@ -149,11 +156,14 @@ public class BlogServiceImpl implements BlogService
 	
 		if(blogbyId.isPresent())
 		{
+		BlogEntity blogEntity = blogbyId.get();
 		BlogRating br=new BlogRating();
 		br.setRating(rating);
 		br.setUserId(userId);
+//		System.err.print(blogEntity);
+		ratingRepo.save(br);
 		}
-		blogRepo.save(blogbyId.get());
+//		blogRepo.save(blogbyId.get());
 		return "rating added successfully";
 	}
 	
